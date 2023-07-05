@@ -1,4 +1,4 @@
-package ru.gb.hm4_task1;
+package ru.gb.hm4.list;
 
 public class Node<E> {
     E value;

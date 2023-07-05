@@ -1,4 +1,4 @@
-package ru.gb.hm4_task1;
+package ru.gb.hm4.list;
 
 public class TwoWayList<E> {
 
@@ -90,25 +90,68 @@ public class TwoWayList<E> {
         size++;
     }
 
-    public void reverse() {
-        Node<E> currentNode = head;
-        int counter = 0;
-        while (counter < size()) {
-            Node<E> temp = new Node<>();
-            Node<E> newNode = new Node<>();
-            temp = currentNode.nextNode;
-            newNode = tail;
-
-            tail = currentNode;
-            tail.nextNode = null;
-            currentNode.previousNode = newNode;
-
-            head = temp;
+    public void removeAt(int index) {
+        if (index >= size() || index < 0) throw new ArrayIndexOutOfBoundsException();
+        else if (index == 0) {
+            head = head.nextNode;
             head.previousNode = null;
+        }
+        else if (index == size() - 1) {
+            tail = tail.previousNode;
             tail.nextNode = null;
-            newNode.nextNode = tail;
-            currentNode = head;
-            counter++;
+        }
+        else {
+            Node<E> currentNode = head;
+            while (index > 0) {
+                index--;
+                currentNode = currentNode.nextNode;
+            }
+            currentNode.previousNode.nextNode = currentNode.nextNode;
+            currentNode.nextNode.previousNode = currentNode.previousNode;
+        }
+        size--;
+    }
+
+    private void remove(E value, Boolean all) {
+        Node<E> currentNode = head;
+        while (currentNode != null) {
+            if (currentNode.value == value) {
+                if (currentNode.previousNode == null) {
+                    head = head.nextNode;
+                    head.previousNode = null;
+                } else if (currentNode.nextNode == null) {
+                    tail = tail.previousNode;
+                    tail.nextNode = null;
+                } else {
+                    currentNode.previousNode.nextNode = currentNode.nextNode;
+                    currentNode.nextNode.previousNode = currentNode.previousNode;
+                }
+                size--;
+                if (!all) return;
+            }
+            currentNode = currentNode.nextNode;
+        }
+    }
+
+    public void remove(E value) {
+        remove(value, false);
+    }
+
+    public void removeAll(E value) {
+        remove(value, true);
+    }
+
+    public void reverse() {
+        Node<E> temp = head;
+        head = tail;
+        tail = temp;
+
+        Node<E> currentNode = head;
+        while (currentNode != null) {
+            temp = currentNode.nextNode; 
+            currentNode.nextNode = currentNode.previousNode; 
+            currentNode.previousNode = temp; 
+            currentNode = currentNode.nextNode;
         }
     }
 
