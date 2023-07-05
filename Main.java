@@ -1,9 +1,6 @@
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-
-import ru.gb.hm4.calc.Calc;
+import ru.gb.hm4.calc.*;
 import ru.gb.hm4.list.*;
+import ru.gb.hm4.view.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -34,21 +31,59 @@ public class Main {
     }
 
     public static void task3() {
-        try {
-            Logger logger = Logger.getLogger(Calc.class.getName());
-            FileHandler fh = new FileHandler("log_calc.log", true);
-            SimpleFormatter sf = new SimpleFormatter();
-            fh.setFormatter(sf);
-            logger.addHandler(fh);
-            Calc calc = new Calc();
-            logger.info("START CALC");
-            String expr = "2 + 2";
-            logger.info("expr: " + expr);
-            double result = calc.getResult(expr);
-            logger.info("result: " + result);
-            System.out.println(result);
-        } catch (Exception e) {
-            e.printStackTrace();
+        Boolean flag = true;
+        Boolean clear = true;
+        Calc calc = new Calc();
+        Form form = new Form();
+        InputChecker inputChecker = new InputChecker();
+        String expr = null;
+        double exprResult;
+        while (flag) {
+            form.show("Меню", FormPatterns.mainMenu(), clear);
+            clear = true;
+            int result = inputChecker.checkInput(FormPatterns.mainMenu(), "Ошибка! Выберите пункт меню: ");
+            switch (result) {
+                case 1:
+                    expr = inputChecker.uncheckedInput("Введите выражение для вычисления: ");
+                    exprResult = calc.getResult(expr);
+                    form.show(String.format("Результат вычисления выражения: \"%s\" равен %s", expr, exprResult), clear);
+                    calc.fixOperation(expr, exprResult);
+                    clear = false;
+                    break;
+                case 2:
+                    if (calc.getHistory().isEmpty()) {
+                        form.show("История операций пуста", clear);
+                    } else {
+                        form.show("История операций", clear);
+                        for (var el : calc.getHistory()) {
+                            System.out.println(el);
+                        }
+                    }
+                    clear = false;
+                    break;
+                case 3:
+                    while (flag) {
+                        form.show("Введите ID операции", clear);
+                        int id = inputChecker.checkInput("Ошибка. Введите ID записи: ");
+                        if (id - 1 >= calc.getHistory().size() || id <= 0) {
+                            clear = false;
+                            form.show("Ошибка. Не найдено записи с ID " + id, clear);
+                        } else {
+                            Double historyResult = calc.getHistory().get(id - 1).getResult();
+                            expr = inputChecker.uncheckedInput("Введите часть выражения, начиная со знака операции для использования значения " + historyResult);
+                            expr = historyResult.intValue() + " " + expr;
+                            exprResult = calc.getResult(expr);
+                            form.show(String.format("Результат вычисления выражения: \"%s\" равен %s", expr, exprResult), clear);
+                            calc.fixOperation(expr, exprResult);
+                            clear = false;
+                            flag = false;
+                        }
+                    }
+                    flag = true;
+                    break;
+                case 4:
+                    return;
+            }
         }
     }
 }

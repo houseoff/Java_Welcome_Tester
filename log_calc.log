@@ -1,6 +1,20 @@
-èþë. 05, 2023 4:31:40 PM Main task3
-INFO: START CALC
-èþë. 05, 2023 4:31:40 PM Main task3
-INFO: expr: 2 + 2
-èþë. 05, 2023 4:31:40 PM Main task3
-INFO: result: 4.0
+èþë. 05, 2023 6:26:30 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 2 + 2, result: 4.0
+èþë. 05, 2023 6:26:35 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 2 + 8, result: 10.0
+èþë. 05, 2023 6:44:16 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 2 + 2, result: 4.0
+èþë. 05, 2023 6:48:48 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 2 + 3, result: 5.0
+èþë. 05, 2023 6:50:54 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 2 + 4, result: 6.0
+èþë. 05, 2023 6:55:16 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 2  +3, result: 5.0
+èþë. 05, 2023 6:58:21 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 2 + 3, result: 5.0
+èþë. 05, 2023 7:04:29 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 2 + 5, result: 7.0
+èþë. 05, 2023 7:04:41 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 7 * 6, result: 42.0
+èþë. 05, 2023 7:05:06 PM ru.gb.hm4.calc.MyLogger logInfo
+INFO: expr: 42 - 41, result: 1.0

@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Calc {
+    private List<CalcOperation> history;
+    private MyLogger logger;
     private List<Lexeme> lexemes;
     private LexemeBuffer lexemeBuffer;
+    private int operationId;
 
     public Calc() {
+        logger = new MyLogger(Calc.class.getName());
         lexemes = new ArrayList<>();
         lexemeBuffer = new LexemeBuffer();
-    }
-
-    public double getResult(String expression) {
-        List<Lexeme> lexemes = lexAnalyze(expression);
-        LexemeBuffer lexemeBuffer = new LexemeBuffer(lexemes);
-        return expr(lexemeBuffer);
+        history = new ArrayList<>();
+        logger.addHandler();
     }
 
     private List<Lexeme> lexAnalyze(String expText) {
@@ -141,4 +141,29 @@ public class Calc {
         }
     }
 
+    public double getResult(String expression) {
+        List<Lexeme> lexemes = lexAnalyze(expression);
+        LexemeBuffer lexemeBuffer = new LexemeBuffer(lexemes);
+        double result = expr(lexemeBuffer);
+        lexemes.clear();
+        lexemeBuffer = null;
+        return result;
+    }
+
+    public void logInfo(String msg) {
+        logger.logInfo(msg);
+    }
+
+    private void addHistory(String expr, double result) {
+        history.add(new CalcOperation(++operationId, expr, result));
+    }
+
+    public List<CalcOperation> getHistory() {
+        return history;
+    }
+
+    public void fixOperation(String expr, double result) {
+        addHistory(expr, result);
+        logInfo("expr: " + expr + ", result: " + result);
+    }
 }
